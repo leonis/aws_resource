@@ -1,21 +1,49 @@
 # AwsResource
 
+NOTE: under development yet.
+
 AwsResource is a wrapper library to manipulate aws resources as Object.
 
+- Easy iteration (no need to use token or marker.)
+- Aws resources(like Ec2 instance, Vpc instance, Elb instance...) describe as a model class instance.
+  - you can extend model class (AwsResource::Ec2, AwsResource::Vpc, etc), like below.
+
+```
+# Add stop method to stop the instance
+class AwsResource::Ec2
+  def stop(options = {})
+    result = @client.stop_instances(
+      options.merge(instance_ids: [instance_id])
+    )
+
+    result.stopping_instances.map { |attrs| Ec2.new(attrs) }
+  end
+end
+
+# find some ec2 instances filtered by params
+# and stop the instance if the instance is in the some_condigion.
+client = AwsResource::Ec2Client.new
+client.each_instances(params) do |instance|
+  instance.stop if instance.some_condition?
+end
+```
+
 NOTE: This gem looks like [aws-sdk-resource](https://github.com/aws/aws-sdk-ruby/tree/master/aws-sdk-resources)
+
+## Current state
 
 - EC2
   - [x] client
   - [x] model
 - VPC
-  - [ ] client
-  - [ ] model
+  - [x] client
+  - [x] model
 - ELB
-  - [ ] client
-  - [ ] model
+  - [x] client
+  - [x] model
 - AutoScalingGroup
-  - [ ] client
-  - [ ] model
+  - [x] client
+  - [x] model
 
 ## Installation
 
@@ -45,5 +73,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/aws_resource.
+Bug reports and pull requests are welcome on GitHub at https://github.com/leonis/aws_resource.
 
