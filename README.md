@@ -1,8 +1,8 @@
 # AwsResource
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/aws_resource`. To experiment with that code, run `bin/console` for an interactive prompt.
+AwsResource is a wrapper library to manipulate aws resources as Object.
 
-TODO: Delete this and the text above, and describe your gem
+NOTE: This gem looks like [aws-sdk-resource](https://github.com/aws/aws-sdk-ruby/tree/master/aws-sdk-resources)
 
 ## Installation
 
