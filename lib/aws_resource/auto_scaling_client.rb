@@ -9,7 +9,9 @@ module AwsResource
       groups = []
 
       loop do
-        result = @client.describe_auto_scaling_groups(options)
+        result = @client.describe_auto_scaling_groups(
+          options.merge(next_token: token)
+        )
 
         token = result.next_token
 
