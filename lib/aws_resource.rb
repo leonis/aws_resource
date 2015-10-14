@@ -17,7 +17,7 @@ require 'aws_resource/auto_scaling_group'
 require 'aws_resource/base_client'
 require 'aws_resource/ec2_client'
 require 'aws_resource/vpc_client'
-#require 'aws_resource/elb/client'
+require 'aws_resource/elb_client'
 require 'aws_resource/auto_scaling_client'
 
 module AwsResource
