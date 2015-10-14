@@ -17,5 +17,6 @@ module AwsResource
 
       vpcs
     end
+    alias_method :vpcs, :each_vpcs
   end
 end

@@ -5,10 +5,6 @@ module AwsResource
     end
 
     def each_instances(options = {}, &block)
-      instances(options, &block)
-    end
-
-    def instances(options = {}, &block)
       result = @client.describe_instances(options)
       return [] if result.nil?
 
@@ -25,6 +21,7 @@ module AwsResource
 
       instances
     end
+    alias_method :instances, :each_instances
 
     def exist?(instance_id)
       result = instances(instance_ids: [instance_id])
