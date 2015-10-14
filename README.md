@@ -4,6 +4,19 @@ AwsResource is a wrapper library to manipulate aws resources as Object.
 
 NOTE: This gem looks like [aws-sdk-resource](https://github.com/aws/aws-sdk-ruby/tree/master/aws-sdk-resources)
 
+- EC2
+  - [x] client
+  - [x] model
+- VPC
+  - [ ] client
+  - [ ] model
+- ELB
+  - [ ] client
+  - [ ] model
+- AutoScalingGroup
+  - [ ] client
+  - [ ] model
+
 ## Installation
 
 Add this line to your application's Gemfile:

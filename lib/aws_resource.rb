@@ -1,5 +1,40 @@
-require "aws_resource/version"
+require 'aws_resource/version'
+
+require 'logger'
+
+require 'aws-sdk'
+require 'active_support'
+
+require 'aws_resource/config'
+require 'aws_resource/null_logger'
+
+require 'aws_resource/base'
+require 'aws_resource/ec2'
+require 'aws_resource/vpc'
+require 'aws_resource/elb'
+require 'aws_resource/auto_scaling_group'
+
+require 'aws_resource/base_client'
+require 'aws_resource/ec2_client'
+require 'aws_resource/vpc_client'
+#require 'aws_resource/elb/client'
+#require 'aws_resource/auto_scaling_group/client'
 
 module AwsResource
-  # Your code goes here...
+  class << self
+    include ActiveSupport::Configurable
+    attr_accessor :logger
+
+    def configure
+      yield(config)
+    end
+
+    def config
+      @config ||= AwsResource::Config.new
+    end
+
+    def logger
+      config.logger || AwsResource::NullLogger.new
+    end
+  end
 end
