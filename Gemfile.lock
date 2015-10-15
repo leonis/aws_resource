@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     aws_resource (0.1.0)
-      activesupport
+      activesupport (~> 4.2)
       aws-sdk (~> 2)
 
 GEM
@@ -62,9 +62,9 @@ PLATFORMS
 DEPENDENCIES
   aws_resource!
   bundler (~> 1.10)
-  pry-byebug
+  pry-byebug (~> 3.2)
   rake (~> 10.0)
-  rspec
+  rspec (~> 3.3)
 
 BUNDLED WITH
    1.10.6
