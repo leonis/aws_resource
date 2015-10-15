@@ -26,5 +26,17 @@ module AwsResource
       elbs
     end
     alias_method :elbs, :each_elbs
+
+    # Find ElasticLoadBalancing by name
+    #
+    # @param name [String] load_balancer_name
+    # @return AwsResource::Elb instance or nil
+    def find_by_name(elb_name)
+      elbs(load_balancer_names: [elb_name]).first
+    rescue Aws::ElasticLoadBalancing::Errors::LoadBalancerNotFound,
+           Aws::ElasticLoadBalancing::Errors::ValidationError => e
+      logger.warn e
+      nil
+    end
   end
 end
