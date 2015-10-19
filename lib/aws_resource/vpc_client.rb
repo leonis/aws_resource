@@ -47,5 +47,47 @@ module AwsResource
       logger.warn e
       nil
     end
+
+    def subnets(options = {})
+      result = @client.describe_subnets(options)
+      return [] if result.nil?
+
+      subnets = []
+      result.subnets.each do |attr|
+        subnet = Subnet.new(attr)
+        subnets << subnet
+        yield(subnet) if block_given?
+      end
+
+      subnets
+    end
+
+    def subnet(subnet_id)
+      subnets(subnet_ids: [subnet_id]).first
+    rescue Aws::EC2::Errors::InvalidSubnetIDNotFound => e
+      logger.warn e
+      nil
+    end
+
+    def security_groups(options = {})
+      result = @client.describe_security_groups(options)
+      return [] if result.nil?
+
+      groups = []
+      result.security_groups.each do |attr|
+        group = SecurityGroup.new(attr)
+        groups << group
+        yield(group) if block_given?
+      end
+
+      groups
+    end
+
+    def security_group(group_name)
+      security_groups(group_names: [group_name]).first
+    rescue Aws::EC2::Errors::InvalidGroupNotFound => e
+      logger.warn e
+      nil
+    end
   end
 end
