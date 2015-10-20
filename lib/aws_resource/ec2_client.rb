@@ -12,7 +12,7 @@ module AwsResource
       result.each_page do |page|
         page.reservations.each do |reservation|
           reservation.instances.each do |attrs|
-            ec2 = Ec2.new(attrs)
+            ec2 = Ec2.new(attrs, @client)
             instances << ec2
             block.call(ec2) if block
           end
