@@ -16,9 +16,7 @@ module AwsResource
     def each(options = {})
       iter = instance_iterator(options)
 
-      unless block_given?
-        return ResourceEnumerator.new(iter)
-      end
+      return ResourceEnumerator.new(iter) unless block_given?
 
       loop { yield(iter.next) }
     end

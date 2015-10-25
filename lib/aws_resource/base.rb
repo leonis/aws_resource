@@ -15,6 +15,8 @@ module AwsResource
 
     protected
 
+    attr_reader :client
+
     def logger
       @logger ||= ::AwsResource.logger
     end
