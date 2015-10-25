@@ -15,8 +15,7 @@ module AwsResource
 
     def each(options = {})
       iter = instance_iterator(options)
-
-      return ResourceEnumerator.new(iter) unless block_given?
+      return resource_enumerator(iter) unless block_given?
 
       loop { yield(iter.next) }
     end
@@ -25,10 +24,8 @@ module AwsResource
       with_params(
         instance_ids: [instance_id]
       ).any?
-    rescue ::Aws::EC2::Errors::InvalidInstanceIdNotFound => e
-      logger.debug e
-      false
-    rescue ::Aws::EC2::Errors::InvalidInstanceIDMalformed => e
+    rescue ::Aws::EC2::Errors::InvalidInstanceIdNotFound,
+           ::Aws::EC2::Errors::InvalidInstanceIDMalformed => e
       logger.debug e
       false
     end
