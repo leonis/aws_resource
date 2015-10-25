@@ -30,26 +30,10 @@ module AwsResource
     end
 
     def each_launch_configurations(options = {})
-      token = nil
-      configurations = []
+      iter = configurations_iterator(options)
+      return resource_enumerator(iter) unless block_given?
 
-      loop do
-        result = @client.describe_launch_configurations(
-          options.merge(next_token: token)
-        )
-
-        token = result.next_token
-
-        result.launch_configurations.each do |attrs|
-          configuration = LaunchConfiguration.new(attrs)
-          configurations << configuration
-          yield(configuration) if block_given?
-        end
-
-        fail StopIteration if token.nil?
-      end
-
-      configurations
+      loop { yield(iter.next) }
     end
     alias_method :launch_configurations, :each_launch_configurations
 
@@ -76,6 +60,7 @@ module AwsResource
       opts = (@options ? @options.merge(options) : options)
 
       AwsResource::Iterator::SimpleIterator.new(
+        @client, :describe_launch_configurations, opts, &extract_configurations
       )
     end
 
@@ -83,6 +68,14 @@ module AwsResource
       proc do |result|
         result.auto_scaling_groups.map do |attrs|
           AutoScalingGroup.new(attrs, self)
+        end
+      end
+    end
+
+    def extract_configurations
+      proc do |result|
+        result.launch_configurations.map do |attrs|
+          LaunchConfiguration.new(attrs)
         end
       end
     end
