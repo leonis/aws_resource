@@ -17,6 +17,7 @@ require 'aws_resource/resource_enumerator'
 
 require 'aws_resource/iterator/simple_iterator'
 require 'aws_resource/iterator/token_iterator'
+require 'aws_resource/iterator/marker_iterator'
 
 require 'aws_resource/base_client'
 require 'aws_resource/ec2_client'

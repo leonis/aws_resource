@@ -7,12 +7,6 @@ module AwsResource
       @options = {}
     end
 
-    def with_params(options = {})
-      dup.tap do |m|
-        m.instance_variable_set(:@options, options)
-      end
-    end
-
     def each(options = {})
       iter = instance_iterator(options)
       return resource_enumerator(iter) unless block_given?

@@ -1,12 +1,12 @@
 module AwsResource
   module Iterator
-    class TokenIterator
+    class MarkerIterator
       def initialize(client, method, *args, &block)
         @client = client
         @method = method
         @args = args
         @block = block
-        @token = nil
+        @marker = nil
 
         @values = []
         @pos = nil
@@ -33,18 +33,20 @@ module AwsResource
       end
 
       def load_next?
-        @pos.nil? || (@values.size == @pos && @token)
+        @pos.nil? || (@values.size == @pos && @marker)
       end
 
       def load_next
         @pos = 0 if @pos.nil?
         args = @args.dup
 
+        puts "load #{@pos}, #{@marker}"
+
         # inject next_token
-        args.first.merge!(next_token: @token)
+        args.first.merge!(marker: @marker)
 
         result = @client.send(@method, *args)
-        @token = result.next_token
+        @marker = result.next_marker
 
         @values = @block.call(result)
       end
