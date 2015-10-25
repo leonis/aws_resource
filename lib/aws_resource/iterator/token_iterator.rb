@@ -43,9 +43,10 @@ module AwsResource
         # inject next_token
         args.first.merge!(next_token: @token)
 
-        @values = @block.call(
-          @client.send(@method, *args)
-        )
+        result = @client.send(@method, *args)
+        @token = result.next_token
+
+        @values = @block.call(result)
       end
     end
   end
