@@ -1,37 +1,52 @@
 module AwsResource
   class Ec2Client < BaseClient
+    include Enumerable
+
     def initialize(options = {})
       @client = ::Aws::EC2::Client.new(options)
+      @options = {}
     end
 
-    def each_instances(options = {}, &block)
-      result = @client.describe_instances(options)
-      return [] if result.nil?
+    def each(options = {})
+      iter = instance_iterator(options)
+      return resource_enumerator(iter) unless block_given?
 
-      instances = []
-      result.each_page do |page|
-        page.reservations.each do |reservation|
-          reservation.instances.each do |attrs|
-            ec2 = Ec2.new(attrs, @client)
-            instances << ec2
-            block.call(ec2) if block
-          end
-        end
-      end
-
-      instances
+      loop { yield(iter.next) }
     end
-    alias_method :instances, :each_instances
 
     def exist?(instance_id)
-      result = instances(instance_ids: [instance_id])
-      result.any? && result.size == 1
-    rescue ::Aws::EC2::Errors::InvalidInstanceIdNotFound => e
+      with_params(
+        instance_ids: [instance_id]
+      ).any?
+    rescue ::Aws::EC2::Errors::InvalidInstanceIdNotFound,
+           ::Aws::EC2::Errors::InvalidInstanceIDMalformed => e
       logger.debug e
       false
-    rescue ::Aws::EC2::Errors::InvalidInstanceIDMalformed => e
-      logger.debug e
-      false
+    end
+
+    private
+
+    def instance_iterator(options)
+      opts = (@options ? @options.merge(options) : options)
+
+      AwsResource::Iterator::SimpleIterator.new(
+        @client, :describe_instances, opts, &extract_instances
+      )
+    end
+
+    def extract_instances
+      proc do |result|
+        values = []
+        result.each_page do |page|
+          page.reservations.each do |reservation|
+            values.concat(
+              reservation.instances.map { |attrs| Ec2.new(attrs) }
+            )
+          end
+        end
+
+        values
+      end
     end
   end
 end
