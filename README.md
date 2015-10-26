@@ -32,18 +32,14 @@ NOTE: This gem looks like [aws-sdk-resource](https://github.com/aws/aws-sdk-ruby
 
 ## Current state
 
-- EC2
-  - [x] client
-  - [x] model
-- VPC
-  - [x] client
-  - [x] model
-- ELB
-  - [x] client
-  - [x] model
-- AutoScalingGroup
-  - [x] client
-  - [x] model
+- Ec2
+  - Ec2::Instance
+  - Ec2::Vpc
+- AutoScaling
+  - AutoScaling::Group
+  - AutoScaling::LaunchConfiguration
+- ElasticLoadBalancing (aka Elb
+  - Elb::LoadBalancer
 
 ## Installation
 
