@@ -10,6 +10,7 @@ require 'aws_resource/null_logger'
 
 require 'aws_resource/base'
 require 'aws_resource/ec2/instance'
+require 'aws_resource/ec2/vpc'
 #require 'aws_resource/ec2'
 #require 'aws_resource/vpc'
 #require 'aws_resource/elb'
