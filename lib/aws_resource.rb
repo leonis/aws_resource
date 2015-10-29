@@ -8,18 +8,20 @@ require 'active_support'
 require 'aws_resource/config'
 require 'aws_resource/null_logger'
 
+require 'aws_resource/iterator/simple_iterator'
+require 'aws_resource/iterator/token_iterator'
+require 'aws_resource/iterator/marker_iterator'
+
+require 'aws_resource/resource_enumerator'
+
 require 'aws_resource/base'
 require 'aws_resource/ec2/instance'
 require 'aws_resource/ec2/vpc'
+require 'aws_resource/auto_scaling/group'
 #require 'aws_resource/ec2'
 #require 'aws_resource/vpc'
 #require 'aws_resource/elb'
 #require 'aws_resource/auto_scaling_group'
-require 'aws_resource/resource_enumerator'
-
-require 'aws_resource/iterator/simple_iterator'
-require 'aws_resource/iterator/token_iterator'
-require 'aws_resource/iterator/marker_iterator'
 
 #require 'aws_resource/base_client'
 #require 'aws_resource/ec2_client'
