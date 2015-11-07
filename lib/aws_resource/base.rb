@@ -16,7 +16,7 @@ module AwsResource
     protected
 
     def logger
-      @logger ||= ::AwsResource.logger
+      ::AwsResource.logger
     end
   end
 end

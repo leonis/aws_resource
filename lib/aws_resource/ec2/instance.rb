@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 module AwsResource
   module Ec2
     class Instance < ::AwsResource::Base
@@ -24,6 +26,18 @@ module AwsResource
           with_params(instance_ids: instance_ids).to_a
         end
 
+        # Find by tags
+        #
+        # @param tags [Hash]
+        # @return Array of AwsResource::Ec2::Instance
+        def find_by_tags(tags)
+          tag_filter = tags.map do |key, value|
+            { name: "tag:#{key}", values: Array.wrap(value) }
+          end
+
+          with_params(filters: tag_filter).to_a
+        end
+
         protected
 
         def extract_instances
@@ -40,10 +54,6 @@ module AwsResource
             values
           end
         end
-      end
-
-      def inspect
-        "#<AwsResource::Ec2::Instance instance_id:#{instance_id}>"
       end
     end
   end

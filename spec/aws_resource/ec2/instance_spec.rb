@@ -62,4 +62,40 @@ RSpec.describe AwsResource::Ec2::Instance do
       end
     end
   end
+
+  describe '.find_by_tags' do
+    subject { model.find_by_tags(tags) }
+
+    context 'when tags is empty' do
+      let(:tags) { {} }
+      it { expect { subject }.to raise_error(Aws::EC2::Errors::InvalidParameterValue) }
+    end
+
+    context 'when tags contain non-exists tags' do
+      let(:tags) { { unknownkey: 'not found' } }
+      it { expect(subject).to be_empty }
+    end
+
+    context 'when tags contain valid tag' do
+      if ENV['EC2_INSTANCE_TAG']
+        let(:tags) do
+          ary = ENV['EC2_INSTANCE_TAG'].split('=')
+          { ary[0] => ary[1] }
+        end
+        it 'return Array of AwsResource::Ec2::Instance' do
+          expect(subject).to be_an_instance_of(Array)
+          expect(subject.size).to be > 0
+
+          instance = subject.first
+          tags.each do |key, value|
+            expect(
+              instance.tags.find { |t| t.key == key && t.value == value }
+            ).not_to be_nil
+          end
+        end
+      else
+        skip 'This spec requre EC2_INSTANCE_TAG environment variable in format of "key=value".'
+      end
+    end
+  end
 end
