@@ -5,7 +5,7 @@ RSpec.describe AwsResource::Ec2::Instance do
 
   it { expect(model.included_modules).to include(AwsResource::Concerns::Enumerable) }
 
-  describe '#find_by_id' do
+  describe '.find_by_id' do
     subject { model.find_by_id(instance_id) }
 
     context 'when instance_id is invalid' do
@@ -31,7 +31,7 @@ RSpec.describe AwsResource::Ec2::Instance do
     end
   end
 
-  describe '#find_by_ids' do
+  describe '.find_by_ids' do
     subject { model.find_by_ids(instance_ids) }
 
     context 'when instance_ids is empty' do
