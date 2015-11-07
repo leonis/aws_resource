@@ -30,5 +30,6 @@ AwsResource.configure do |conf|
 end
 
 RSpec.configure do |config|
+  config.include AwsEnvHelper
   config.order = 'random'
 end
