@@ -1,5 +1,5 @@
 module AwsResource
-  class ResourceEnumerator < ::Enumerator
+  class Enumerator < ::Enumerator
     def initialize(iterator)
       super() do |y|
         loop { y.yield(iterator.next) }

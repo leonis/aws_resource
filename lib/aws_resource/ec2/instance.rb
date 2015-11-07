@@ -1,11 +1,28 @@
 module AwsResource
   module Ec2
     class Instance < ::AwsResource::Base
+      include AwsResource::Concerns::Enumerable
+
       client_class Aws::EC2::Client
       iterator ::AwsResource::Iterator::SimpleIterator,
                method: :describe_instances
 
       class << self
+        # Find by instance_id
+        #
+        # @param instance_id [String]
+        # @return AwsResource::Ec2::Instance
+        def find_by_id(instance_id)
+          with_params(instance_ids: [instance_id]).first
+        end
+
+        # Find by instance_ids
+        #
+        # @param instance_ids [Array]
+        # @return Array of AwsResource::Ec2::Instance
+        def find_by_ids(instance_ids)
+          with_params(instance_ids: instance_ids).to_a
+        end
 
         protected
 
