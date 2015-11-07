@@ -38,6 +38,17 @@ module AwsResource
           with_params(filters: tag_filter).to_a
         end
 
+        # Check existance of EC2 instance by instance_id
+        #
+        # @param instance_id [String]
+        # @return true or false
+        def exist?(instance_id)
+          with_params(instance_ids: [instance_id]).any?
+        rescue ::Aws::EC2::Errors::InvalidInstanceIdNotFound,
+               ::Aws::EC2::Errors::InvalidInstanceIDMalformed
+          false
+        end
+
         protected
 
         def extract_instances

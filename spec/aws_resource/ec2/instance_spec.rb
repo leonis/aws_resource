@@ -95,4 +95,22 @@ RSpec.describe AwsResource::Ec2::Instance do
       end
     end
   end
+
+  describe '.exist?' do
+    subject { model.exist?(instance_id) }
+
+    context 'when instance_id is invalid' do
+      let(:instance_id) { 'invalid_id' }
+      it { expect(subject).to be_falsey }
+    end
+
+    context 'when instance_id is valid' do
+      if ENV['EC2_INSTANCE_ID']
+        let(:instance_id) { ENV['EC2_INSTANCE_ID'] }
+        it { expect(subject).to be_truthy }
+      else
+        skip 'This spec require EC2_INSTANCE_ID environment variable.'
+      end
+    end
+  end
 end
