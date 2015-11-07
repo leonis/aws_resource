@@ -11,7 +11,7 @@ if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
   SimpleCov.start do
-    add_filter '.bundler/'
+    add_filter '.bundle/'
     add_filter 'spec'
   end
 end
