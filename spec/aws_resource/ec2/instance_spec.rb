@@ -55,7 +55,7 @@ RSpec.describe AwsResource::Ec2::Instance do
         it 'return Array of AwsResource::Ec2::Instance' do
           expect(subject).to be_an_instance_of(Array)
           expect(subject.size).to eq(1)
-          expect(subject.map(&:instance_id)).to eq([ENV['EC2_INSTANCE_ID']])
+          expect(subject.map(&:instance_id)).to eq(instance_ids)
         end
       else
         skip 'This spec require EC2_INSTANCE_ID environment variable.'
@@ -78,10 +78,7 @@ RSpec.describe AwsResource::Ec2::Instance do
 
     context 'when tags contain valid tag' do
       if ENV['EC2_INSTANCE_TAG']
-        let(:tags) do
-          ary = ENV['EC2_INSTANCE_TAG'].split('=')
-          { ary[0] => ary[1] }
-        end
+        let(:tags) { parse_tag(ENV['EC2_INSTANCE_TAG']) }
         it 'return Array of AwsResource::Ec2::Instance' do
           expect(subject).to be_an_instance_of(Array)
           expect(subject.size).to be > 0
