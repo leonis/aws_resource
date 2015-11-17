@@ -8,6 +8,8 @@ module AwsResource
     def method_missing(method, *args)
       if @attrs.respond_to?(method)
         @attrs.send(method, *args)
+      elsif @client && @client.respond_to?(method)
+        @client.send(method, *args)
       else
         super
       end
